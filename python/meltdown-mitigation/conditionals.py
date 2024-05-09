@@ -13,8 +13,11 @@ def is_criticality_balanced(temperature, neutrons_emitted):
     - The number of neutrons emitted per second is greater than 500.
     - The product of temperature and neutrons emitted per second is less than 500000.
     """
+    if temperature < 800 and neutrons_emitted > 500 and (temperature * neutrons_emitted) < 500000:
+        return True
+    else:
+        return False
 
-    pass
 
 
 def reactor_efficiency(voltage, current, theoretical_max_power):
@@ -36,8 +39,16 @@ def reactor_efficiency(voltage, current, theoretical_max_power):
     (generated power/ theoretical max power)*100
     where generated power = voltage * current
     """
-
-    pass
+    efficiency = (voltage * current)/ theoretical_max_power * 100
+    if efficiency >= 80:
+        return 'green'
+    elif efficiency >= 60:
+        return 'orange'
+    elif efficiency >= 30:
+        return 'red'
+    else:
+        return 'black'
+    
 
 
 def fail_safe(temperature, neutrons_produced_per_second, threshold):
@@ -52,5 +63,17 @@ def fail_safe(temperature, neutrons_produced_per_second, threshold):
     2. 'NORMAL' -> `temperature * neutrons per second` +/- 10% of `threshold`
     3. 'DANGER' -> `temperature * neutrons per second` is not in the above-stated ranges
     """
-
-    pass
+    status = temperature * neutrons_produced_per_second
+    if status < threshold * 0.9:
+        return 'LOW'
+    elif status < threshold * 1.1  and status > threshold * 0.9:
+        print (status)
+        print (threshold * 1.1)
+        print(threshold * 0.9 -10)
+        stat = 'norm'
+        print(stat)
+        return 'NORMAL'
+    else:
+        print('danger')
+        return 'DANGER'
+fail_safe(10, 1101, 10000)
